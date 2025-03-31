@@ -11,7 +11,7 @@ public class GroundMarker : MonoBehaviour
     public float scaleSpeed = 1;
     public Material movingMaterial;
     public Material attackMaterial;
-    public Material gatherMaterial;
+    public Material gatherMaterial; 
 
     // Update is called once per frame
     void Update()
