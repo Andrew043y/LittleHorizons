@@ -1,4 +1,5 @@
 // using System.Diagnostics;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class SelectionBox : MonoBehaviour
     public RectTransform selectionBox;
     private List<Creature> selectedCreatures=new List<Creature>();
     public LayerMask ground;
+    public LayerMask villager;
     public GameObject groundMarker;
 
     // Update is called once per frame
@@ -18,12 +20,19 @@ public class SelectionBox : MonoBehaviour
     {
         // Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
         if(Input.GetMouseButtonDown(0)){
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, villager)){
+                hit.collider.gameObject.GetComponent<Creature>().isSelected=true;
+            }
+
+
             mousePositionInitial = Input.mousePosition;
             isDragging=false;
         }
 
         if(Input.GetMouseButton(0)){
-            if(!isDragging && (mousePositionInitial-Input.mousePosition).magnitude>30){
+            if(!isDragging && (mousePositionInitial-Input.mousePosition).magnitude>2){
                 isDragging=true;
             }
 
@@ -76,8 +85,8 @@ public class SelectionBox : MonoBehaviour
                 Debug.Log("Selected "+selectableObj.name);
                 if(selectableObj.GetComponent<Creature>() !=null){
                     Creature creature=selectableObj.GetComponent<Creature>();
-                    selectedCreatures.Add(creature);
-                    creature.isSelected=true;
+                    selectedCreatures.Add(creature);        //add the Creatures to selected Creatures list
+                    creature.isSelected=true;               //and select them
                 }
             }
         }

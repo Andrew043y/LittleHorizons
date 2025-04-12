@@ -25,35 +25,55 @@ public class Creature : MonoBehaviour
     {
         if(isSelected){
             selectThis();
-        }
-        else{
-            unselectThis();
-        }
-
-        if(Input.GetMouseButtonDown(1)){        //right click movement
+            if(Input.GetMouseButtonDown(1)){        //right click movement
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                    if(isSelected){
                         agent.SetDestination(hit.point);
                         GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
 
                         groundMarkerClone.GetComponent<GroundMarker>().setMoving();
                         unselectThis();
-                    }
                     // Debug.Log(hit.transform.position);
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, food)){
-                if(isSelected){
                     agent.SetDestination(hit.point);
                     GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
 
                     groundMarkerClone.GetComponent<GroundMarker>().setGathering();
                     unselectThis();
-                }
             }
         }
+        }
+        else{
+            unselectThis();
+        }
+
+        // if(Input.GetMouseButtonDown(1)){        //right click movement
+        //     RaycastHit hit;
+        //     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //     Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
+        //     if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+        //             if(isSelected){
+        //                 agent.SetDestination(hit.point);
+        //                 GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
+
+        //                 groundMarkerClone.GetComponent<GroundMarker>().setMoving();
+        //                 unselectThis();
+        //             }
+        //             // Debug.Log(hit.transform.position);
+        //     }
+        //     else if(Physics.Raycast(ray, out hit, Mathf.Infinity, food)){
+        //         if(isSelected){
+        //             agent.SetDestination(hit.point);
+        //             GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
+
+        //             groundMarkerClone.GetComponent<GroundMarker>().setGathering();
+        //             unselectThis();
+        //         }
+        //     }
+        // }
     }
 
     public void Stop(){
@@ -83,7 +103,7 @@ public class Creature : MonoBehaviour
 
     public void selectThis(){
         for(int i=0; i<transform.childCount; i++){
-            if(transform.GetChild(i).CompareTag("Gatherable")==false){
+            if(transform.GetChild(i).CompareTag("Gatherable")==false){      //check if child objects in the creature selected are not part of its body
                 transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
             }
         }
