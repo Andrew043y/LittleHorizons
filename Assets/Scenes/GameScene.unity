@@ -296,9 +296,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: checkFoodRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: foodReturnObject
       value: 
       objectReference: {fileID: 1929810153}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1173052327}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: controller
       value: 
@@ -315,6 +323,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: gatherMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 576f0d762c09ca245a0e266e4118aa7a, type: 2}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: defaultHeadMaterial
       value: 
@@ -783,6 +795,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91626e427012cbc44a97696de0749f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &255262688 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+  m_PrefabInstance: {fileID: 766615883}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 255262684}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61528cdf76d40e4ebe983714725ebd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &326499565
@@ -1334,9 +1357,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: checkFoodRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: foodReturnObject
       value: 
       objectReference: {fileID: 1929810153}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1902545712}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: controller
       value: 
@@ -1353,6 +1384,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: gatherMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 576f0d762c09ca245a0e266e4118aa7a, type: 2}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: defaultHeadMaterial
       value: 
@@ -1868,9 +1903,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: checkFoodRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: foodReturnObject
       value: 
       objectReference: {fileID: 1929810153}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 984723311}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: controller
       value: 
@@ -1887,6 +1930,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: gatherMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 576f0d762c09ca245a0e266e4118aa7a, type: 2}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: defaultHeadMaterial
       value: 
@@ -2468,9 +2515,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: checkFoodRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: foodReturnObject
       value: 
       objectReference: {fileID: 1929810153}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 255262688}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: controller
       value: 
@@ -2487,6 +2542,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: gatherMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 576f0d762c09ca245a0e266e4118aa7a, type: 2}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: defaultHeadMaterial
       value: 
@@ -3130,6 +3189,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91626e427012cbc44a97696de0749f6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &984723311 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+  m_PrefabInstance: {fileID: 559272007}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984723307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61528cdf76d40e4ebe983714725ebd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1054450673
 GameObject:
   m_ObjectHideFlags: 0
@@ -3599,6 +3669,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91626e427012cbc44a97696de0749f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1173052327 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+  m_PrefabInstance: {fileID: 61632051}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1173052323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61528cdf76d40e4ebe983714725ebd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1201897158 stripped
@@ -5328,6 +5409,17 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1872944257 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+  m_PrefabInstance: {fileID: 8691115852301651804}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1872944250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61528cdf76d40e4ebe983714725ebd4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1888588101
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5458,6 +5550,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91626e427012cbc44a97696de0749f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1902545712 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+  m_PrefabInstance: {fileID: 434817104}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1902545708}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d61528cdf76d40e4ebe983714725ebd4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1905879021
@@ -6142,9 +6245,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: checkFoodRadius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7205913018439538985, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: foodReturnObject
       value: 
       objectReference: {fileID: 1929810153}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: AI
+      value: 
+      objectReference: {fileID: 1872944257}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: controller
       value: 
@@ -6161,6 +6272,10 @@ PrefabInstance:
       propertyPath: ground.m_Bits
       value: 512
       objectReference: {fileID: 0}
+    - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
+      propertyPath: gatherMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 576f0d762c09ca245a0e266e4118aa7a, type: 2}
     - target: {fileID: 9035103286273504639, guid: f98f806c424542644b81684363a95582, type: 3}
       propertyPath: defaultHeadMaterial
       value: 

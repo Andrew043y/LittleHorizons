@@ -1,19 +1,56 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class VillagerAI : BaseAI
 {
     public Creature creature;
     public GameObject foodReturnObject; //stockpile
     public GameObject targetGatherable; //piece of food
-    public float checkFoodRadius = 1.25f;           // May want to make the radius smaller for full version, like 1f or lower 
+    NavMeshAgent agent;
+    public LayerMask ground;
+    public LayerMask gatherable;
+    public GameObject groundMarker;
+    public Material gatherMaterial;
+    public float checkFoodRadius = 1f;           // May want to make the radius smaller for full version, like 1f or lower 
 
     protected void Awake()
     {
         base.Awake();
+        agent=GetComponent<NavMeshAgent>();
         creature=GetComponent<Creature>();
+        ground=LayerMask.GetMask("Ground");
+        gatherable=LayerMask.GetMask("Gatherable");
         ChangeState(WanderState);
     }
-    void CheckForFood(){
+
+    void Update()
+    {
+        if(creature.isSelected){
+            if(Input.GetMouseButtonDown(1)){        //right click movement
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+                        agent.SetDestination(hit.point);
+                        GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
+
+                        groundMarkerClone.GetComponent<GroundMarker>().setMoving();
+                        creature.unselectThis();
+                    // Debug.Log(hit.transform.position);
+            }
+            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, gatherable)){
+                    agent.SetDestination(hit.point);
+                    GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
+                    groundMarkerClone.GetComponent<Renderer>().material=gatherMaterial;
+
+                    // groundMarkerClone.GetComponent<GroundMarker>().setGathering();
+                    creature.unselectThis();
+            }
+        }
+        }
+    }
+
+    void CheckForGatherable(){
         Collider[] colliders = Physics.OverlapSphere(transform.position, checkFoodRadius, LayerMask.GetMask("Gatherable"));
         if(colliders.Length>0){
             targetGatherable=colliders[0].gameObject;
@@ -28,7 +65,7 @@ public class VillagerAI : BaseAI
         }
         // creature.MoveToward(wanderPosition);
 
-        CheckForFood();
+        CheckForGatherable();
         if(targetGatherable!=null){
             creature.isSelected=false;
             ChangeState(getGatherableState);

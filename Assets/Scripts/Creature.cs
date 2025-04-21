@@ -10,16 +10,17 @@ public class Creature : MonoBehaviour
     public Material defaultTorsoMaterial;
     public bool isSelected=false;
     public LayerMask ground;
-    public LayerMask food;
+    public LayerMask gatherable;
     public GameObject groundMarker;
-    NavMeshAgent agent;
+    public Material gatherMaterial;
+    public BaseAI AI;
 
     void Awake()
     {
+        AI=GetComponent<VillagerAI>();
         controller = GetComponent<CharacterController>();
-        agent=GetComponent<NavMeshAgent>();
         ground=LayerMask.GetMask("Ground");
-        food=LayerMask.GetMask("Food");
+        gatherable=LayerMask.GetMask("Gatherable");
 
     }
 
@@ -29,26 +30,6 @@ public class Creature : MonoBehaviour
             
             selectThis();
 
-            if(Input.GetMouseButtonDown(1)){        //right click movement
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                        agent.SetDestination(hit.point);
-                        GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
-
-                        groundMarkerClone.GetComponent<GroundMarker>().setMoving();
-                        unselectThis();
-                    // Debug.Log(hit.transform.position);
-            }
-            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, food)){
-                    agent.SetDestination(hit.point);
-                    GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
-
-                    groundMarkerClone.GetComponent<GroundMarker>().setGathering();
-                    unselectThis();
-            }
-        }
         }
         else{
             unselectThis();
