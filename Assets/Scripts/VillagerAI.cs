@@ -24,7 +24,7 @@ public class VillagerAI : BaseAI
     public void WanderState(){
         stateImIn = "Wander State";
         if(stateTick==1){
-            wanderPosition = transform.position + new Vector3(Random.Range(-10f,10f), 0, Random.Range(-10f,10f));
+            wanderPosition = transform.position + new Vector3(Random.Range(-10f,10f), 0, Random.Range(-10f,10f));   //when villager idle, move slightly
         }
         // creature.MoveToward(wanderPosition);
 
@@ -71,7 +71,9 @@ public class VillagerAI : BaseAI
      }
     void ReturnFoodState(){
         stateImIn="Return Food State";
-        creature.MoveToward(foodReturnObject.transform.position);
+        if(creature.isSelected==false){     //I want to change state of villagerAI to be wandering if it is selected while returning food   **
+            creature.MoveToward(foodReturnObject.transform.position);
+        }
         if(Vector3.Distance(targetGatherable.transform.position, foodReturnObject.transform.position)<2f){
             Destroy(targetGatherable);
             ChangeState(WanderState);

@@ -15,6 +15,12 @@ public class SelectionBox : MonoBehaviour
     public LayerMask villager;
     public GameObject groundMarker;
 
+    void Awake()
+    {
+        ground=LayerMask.GetMask("Ground");
+        villager=LayerMask.GetMask("Villager");
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -24,6 +30,14 @@ public class SelectionBox : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, villager)){
                 hit.collider.gameObject.GetComponent<Creature>().isSelected=true;
+                Debug.Log(hit.transform.position);
+                selectedCreatures.Add(hit.collider.gameObject.GetComponent<Creature>());
+            }
+            else{
+                foreach(Creature creature in selectedCreatures){
+                    creature.isSelected=false;
+                    // selectedCreatures.Remove(creature);
+                }
             }
 
 

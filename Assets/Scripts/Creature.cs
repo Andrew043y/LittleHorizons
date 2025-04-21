@@ -18,13 +18,17 @@ public class Creature : MonoBehaviour
     {
         controller = GetComponent<CharacterController>();
         agent=GetComponent<NavMeshAgent>();
+        ground=LayerMask.GetMask("Ground");
+        food=LayerMask.GetMask("Food");
 
     }
 
     void Update()
     {
         if(isSelected){
+            
             selectThis();
+
             if(Input.GetMouseButtonDown(1)){        //right click movement
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
