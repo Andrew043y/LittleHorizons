@@ -6,9 +6,9 @@ public class GroundMarker : MonoBehaviour
     public bool isMoving=false;
     public bool isAttacking=false;
     public bool isGathering=false;
-    float currentScale = 1.25f;
+    float currentScale = Transform.localscale;      //this is a vector 3 use that ! ! ! !! ! ! 
     private float checkCollisionRadius=2f;
-    public float scaleSpeed = 1;
+    public float scaleSpeed = 0.5f;
     public Material movingMaterial;
     public Material attackMaterial;
     public Material gatherMaterial; 
@@ -25,7 +25,7 @@ public class GroundMarker : MonoBehaviour
             StartCoroutine(Shrinking());
         }
         if(isGathering){
-            transform.GetComponent<Renderer>().material=gatherMaterial;
+            // transform.GetComponent<Renderer>().material=gatherMaterial;
             StartCoroutine(Shrinking());
         }
     }
@@ -49,31 +49,11 @@ public class GroundMarker : MonoBehaviour
     IEnumerator Shrinking(){
         while(currentScale >= 0f){
             currentScale -= scaleSpeed * Time.deltaTime/10;
-            transform.localScale = Vector3.one * currentScale;
+            transform.localScale = new Vector3(currentScale, 1, currentScale);
             yield return null;
         }
         // isMoving=false;
 
         Destroy(gameObject);
     }
-
-    public void checkForGatherable(){
-        Collider[] gatherColliders = Physics.OverlapSphere(transform.position, checkCollisionRadius, LayerMask.GetMask("Gatherable"));
-        if(gatherColliders.Length>0){
-            setGathering();
-        }
-    }
-
-    // void OnTriggerEnter(Collider other)
-    // {
-    //     if(other.CompareTag("Gatherable")){
-    //         setGathering();
-    //     }
-    //     else if(other.CompareTag("Attackable")){
-    //         setAttacking();
-    //     }
-    //     else{
-    //         setMoving();
-    //     }
-    // }
 }

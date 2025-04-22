@@ -6,11 +6,14 @@ public class VillagerAI : BaseAI
     public Creature creature;
     public GameObject foodReturnObject; //stockpile
     public GameObject targetGatherable; //piece of food
+    public GameObject gatherCircle;
+    public GameObject carriedGatherable;
     NavMeshAgent agent;
     public LayerMask ground;
     public LayerMask gatherable;
     public GameObject groundMarker;
     public Material gatherMaterial;
+    public Vector3 destination;
     public float checkFoodRadius = 1f;           // May want to make the radius smaller for full version, like 1f or lower 
 
     protected void Awake()
@@ -25,26 +28,36 @@ public class VillagerAI : BaseAI
 
     void Update()
     {
+        base.Update();
         if(creature.isSelected){
             if(Input.GetMouseButtonDown(1)){        //right click movement
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
-            if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+            if(Physics.Raycast(ray, out hit, Mathf.Infinity, gatherable)){
+                    GameObject gatherableItem = hit.transform.gameObject;
+                    ChangeState(MovingState);
+                    agent.SetDestination(hit.point);
+                    destination = hit.point;
+                    Debug.Log("Gatherable hit!");
+                    Vector3 gatherablePos = gatherableItem.transform.position;
+                    gatherablePos.y=0.13f;
+                    GameObject gatherCircleClone=Instantiate(gatherCircle, gatherablePos, Quaternion.identity);
+                    // gatherCircleClone.GetComponent<GroundMarker>().setGathering();
+                    creature.unselectThis();
+            }
+            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
+                Vector3 hitPoint = hit.point;
+                        ChangeState(MovingState);
                         agent.SetDestination(hit.point);
+                        Debug.Log("Raycast hit: "+ hit.transform.gameObject.name);
+                        destination = hit.point;
+                        Debug.Log("Ground hit!");
                         GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
 
                         groundMarkerClone.GetComponent<GroundMarker>().setMoving();
                         creature.unselectThis();
                     // Debug.Log(hit.transform.position);
-            }
-            else if(Physics.Raycast(ray, out hit, Mathf.Infinity, gatherable)){
-                    agent.SetDestination(hit.point);
-                    GameObject groundMarkerClone=Instantiate(groundMarker, hit.point, Quaternion.identity);
-                    groundMarkerClone.GetComponent<Renderer>().material=gatherMaterial;
-
-                    // groundMarkerClone.GetComponent<GroundMarker>().setGathering();
-                    creature.unselectThis();
             }
         }
         }
@@ -64,11 +77,16 @@ public class VillagerAI : BaseAI
             wanderPosition = transform.position + new Vector3(Random.Range(-10f,10f), 0, Random.Range(-10f,10f));   //when villager idle, move slightly
         }
         // creature.MoveToward(wanderPosition);
-
-        CheckForGatherable();
-        if(targetGatherable!=null){
-            creature.isSelected=false;
-            ChangeState(getGatherableState);
+        if(carriedGatherable==null){
+            CheckForGatherable();
+            if(targetGatherable!=null){
+                creature.isSelected=false;
+                ChangeState(getGatherableState);
+                return;
+            }
+        }
+        else if(carriedGatherable!=null && Vector3.Distance(transform.position, foodReturnObject.transform.position)<6f){
+            ChangeState(ReturnFoodState);
             return;
         }
 
@@ -101,6 +119,7 @@ public class VillagerAI : BaseAI
         creature.MoveToward(targetGatherable.transform.position);
         if(Vector3.Distance(transform.position, targetGatherable.transform.position)<2f){
             creature.pickup(targetGatherable);
+            carriedGatherable=targetGatherable;
             ChangeState(ReturnFoodState);
             return;
         }
@@ -111,14 +130,19 @@ public class VillagerAI : BaseAI
         if(creature.isSelected==false){     //I want to change state of villagerAI to be wandering if it is selected while returning food   **
             creature.MoveToward(foodReturnObject.transform.position);
         }
-        if(Vector3.Distance(targetGatherable.transform.position, foodReturnObject.transform.position)<2f){
-            Destroy(targetGatherable);
+        if(Vector3.Distance(transform.position, foodReturnObject.transform.position)<6f){
+            Destroy(carriedGatherable);
+            carriedGatherable=null;
             ChangeState(WanderState);
             return;
         }
     }
-    public void MovingState(Vector3 destination){
+    void MovingState(){
         stateImIn="Moving State";
+        float distance = Vector3.Distance(transform.position, destination);
+        if(distance<2f){
+            ChangeState(WanderState);
+        }
     }
 
 }

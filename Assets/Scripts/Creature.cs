@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -85,16 +86,33 @@ public class Creature : MonoBehaviour
         collectable.transform.parent = transform;
         collectable.transform.localPosition = new Vector3(0,2.5f,0);
     }
+    public void drop(GameObject collectable){
+        collectable.transform.parent = transform;
+        collectable.transform.localPosition = new Vector3(0,-2.5f,0);
+    }
 
     public void selectThis(){
         for(int i=0; i<transform.childCount; i++){
             if(transform.GetChild(i).CompareTag("Gatherable")==false){      //check if child objects in the creature selected are not part of its body
-                transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
+                Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
+                Material[] materials = renderer.materials;
+                materials[1].SetFloat("_TransparencyVal", 1f);
+                materials[1].color=Color.green;
+                // transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
             }
         }
     }
     public void unselectThis(){
         isSelected=false;
+        for(int i=0; i<transform.childCount; i++){
+            if(transform.GetChild(i).CompareTag("Gatherable")==false){      //check if child objects in the creature selected are not part of its body
+                Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
+                Material[] materials = renderer.materials;
+                materials[1].color=Color.white;
+                materials[1].SetFloat("_TransparencyVal", 0f);
+                // transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
+            }
+        }
         transform.GetChild(0).GetComponent<Renderer>().material=defaultHeadMaterial;    //reset head material
         transform.GetChild(1).GetComponent<Renderer>().material=defaultTorsoMaterial;   //reset torso material
     }
