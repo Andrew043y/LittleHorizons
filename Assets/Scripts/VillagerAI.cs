@@ -1,9 +1,11 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class VillagerAI : BaseAI
 {
     public Creature creature;
+    public ResourceManager resourceManager;
     public GameObject foodReturnObject; //stockpile
     public GameObject targetGatherable; //piece of food
     public GameObject gatherCircle;
@@ -21,6 +23,7 @@ public class VillagerAI : BaseAI
         base.Awake();
         agent=GetComponent<NavMeshAgent>();
         creature=GetComponent<Creature>();
+        resourceManager = foodReturnObject.GetComponent<ResourceManager>();
         ground=LayerMask.GetMask("Ground");
         gatherable=LayerMask.GetMask("Gatherable");
         ChangeState(WanderState);
@@ -35,16 +38,23 @@ public class VillagerAI : BaseAI
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, gatherable)){
-                    GameObject gatherableItem = hit.transform.gameObject;
-                    ChangeState(MovingState);
-                    agent.SetDestination(hit.point);
-                    destination = hit.point;
-                    Debug.Log("Gatherable hit!");
-                    Vector3 gatherablePos = gatherableItem.transform.position;
-                    gatherablePos.y=0.13f;
-                    GameObject gatherCircleClone=Instantiate(gatherCircle, gatherablePos, Quaternion.identity);
-                    // gatherCircleClone.GetComponent<GroundMarker>().setGathering();
+                GameObject gatherableItem = hit.transform.gameObject;
+                agent.SetDestination(hit.point);
+                destination = hit.point;
+                Debug.Log("Gatherable hit!");
+                Vector3 gatherablePos = gatherableItem.transform.position;
+                gatherablePos.y=0.13f;
+                GameObject gatherCircleClone=Instantiate(gatherCircle, gatherablePos, Quaternion.identity);
+                gatherCircleClone.GetComponent<GroundMarker>().setGathering();
+                if(carriedGatherable==null){
+                    targetGatherable = gatherableItem;
+                    ChangeState(getGatherableState);
                     creature.unselectThis();
+                }
+                else{
+                    ChangeState(ReturnFoodState);
+                } 
+                    return;
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 Vector3 hitPoint = hit.point;
@@ -57,6 +67,7 @@ public class VillagerAI : BaseAI
 
                         groundMarkerClone.GetComponent<GroundMarker>().setMoving();
                         creature.unselectThis();
+                        return;
                     // Debug.Log(hit.transform.position);
             }
         }
@@ -67,14 +78,15 @@ public class VillagerAI : BaseAI
         Collider[] colliders = Physics.OverlapSphere(transform.position, checkFoodRadius, LayerMask.GetMask("Gatherable"));
         if(colliders.Length>0){
             targetGatherable=colliders[0].gameObject;
-            targetGatherable.gameObject.layer = LayerMask.NameToLayer("ReservedGatherable");
+            // targetGatherable.gameObject.layer = LayerMask.NameToLayer("ReservedGatherable");
         }
     }
     Vector3 wanderPosition=Vector3.zero;
     public void WanderState(){
         stateImIn = "Wander State";
-        if(stateTick==1){
-            wanderPosition = transform.position + new Vector3(Random.Range(-10f,10f), 0, Random.Range(-10f,10f));   //when villager idle, move slightly
+        if(stateTick==1000){
+            wanderPosition = transform.position + new Vector3(Random.Range(-1f,1f), 0, Random.Range(-1f,1f));   //when villager idle, move slightly
+            agent.SetDestination(wanderPosition);
         }
         // creature.MoveToward(wanderPosition);
         if(carriedGatherable==null){
@@ -89,6 +101,7 @@ public class VillagerAI : BaseAI
             ChangeState(ReturnFoodState);
             return;
         }
+        return;
 
         // if(Vector3.Distance(transform.position, wanderPosition)<1f){
         //     ChangeState(PauseState);
@@ -118,8 +131,10 @@ public class VillagerAI : BaseAI
         }
         creature.MoveToward(targetGatherable.transform.position);
         if(Vector3.Distance(transform.position, targetGatherable.transform.position)<2f){
-            creature.pickup(targetGatherable);
-            carriedGatherable=targetGatherable;
+            GameObject harvestResource = Instantiate(targetGatherable.GetComponent<Gatherable>().gatherableObject);
+            creature.pickup(harvestResource);
+            targetGatherable.GetComponent<Gatherable>().decrement();
+            carriedGatherable=harvestResource;
             ChangeState(ReturnFoodState);
             return;
         }
@@ -131,6 +146,25 @@ public class VillagerAI : BaseAI
             creature.MoveToward(foodReturnObject.transform.position);
         }
         if(Vector3.Distance(transform.position, foodReturnObject.transform.position)<6f){
+            string gatherableTag = carriedGatherable.tag;
+            Debug.Log("gatherableTag: "+gatherableTag);
+            switch (gatherableTag)
+            {
+                case "Wood":
+                resourceManager.addWood(1);
+                break;
+
+                case "Food":
+                resourceManager.addFood(1);
+                break;
+
+                case "Stone":
+                resourceManager.addStone(1);
+                break;
+
+                default:
+                break;
+            }
             Destroy(carriedGatherable);
             carriedGatherable=null;
             ChangeState(WanderState);
@@ -139,6 +173,7 @@ public class VillagerAI : BaseAI
     }
     void MovingState(){
         stateImIn="Moving State";
+        targetGatherable=null;
         float distance = Vector3.Distance(transform.position, destination);
         if(distance<2f){
             ChangeState(WanderState);

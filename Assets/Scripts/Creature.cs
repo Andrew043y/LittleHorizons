@@ -93,7 +93,7 @@ public class Creature : MonoBehaviour
 
     public void selectThis(){
         for(int i=0; i<transform.childCount; i++){
-            if(transform.GetChild(i).CompareTag("Gatherable")==false){      //check if child objects in the creature selected are not part of its body
+            if(transform.GetChild(i).CompareTag("Villager")==true){      //check if child objects in the creature selected are not part of its body
                 Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
                 Material[] materials = renderer.materials;
                 materials[1].SetFloat("_TransparencyVal", 1f);
@@ -105,7 +105,7 @@ public class Creature : MonoBehaviour
     public void unselectThis(){
         isSelected=false;
         for(int i=0; i<transform.childCount; i++){
-            if(transform.GetChild(i).CompareTag("Gatherable")==false){      //check if child objects in the creature selected are not part of its body
+            if(transform.GetChild(i).CompareTag("Villager")==true){      //check if child objects in the creature selected are not part of its body
                 Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
                 Material[] materials = renderer.materials;
                 materials[1].color=Color.white;
