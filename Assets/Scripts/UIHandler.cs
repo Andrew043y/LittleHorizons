@@ -3,11 +3,17 @@ using UnityEngine;
 public class UIHandler : MonoBehaviour
 {
     public GameObject buildingObject;
+    public GameObject UIPlay;
+    public GameObject UILoad;
+    public GameObject UIPause;
+    public GameObject MainMenuHandler;
     public LayerMask ground;
     public Building building;
     public GameObject designatedPlot=null;
     public ResourceManager resourceManager;
     public bool buildingInConstruction;
+    public bool gameLoading=true;
+    public bool gamePaused=false;
     public struct ResourceRequirements{
         public int woodReq, foodReq, stoneReq;
 
@@ -36,12 +42,32 @@ public class UIHandler : MonoBehaviour
     void Awake()
     {
         buildingInConstruction=false;
-        building = buildingObject.GetComponent<Building>();
         ground=LayerMask.GetMask("Ground");
+        UIPlay.SetActive(false);
+        UILoad.SetActive(true);
+        Time.timeScale=0;
     }
 
     void Update()
     {
+
+        if(Input.GetKeyDown(KeyCode.Escape) && gameLoading==false){
+            gamePaused=togglePause(gamePaused);
+            UIPause.SetActive(true);
+            UIPlay.SetActive(false);
+            // Time.timeScale=1;
+        }
+
+        if(gameLoading==false && gamePaused == false){
+            UIPlay.SetActive(true);
+            UILoad.SetActive(false);
+            Time.timeScale=1;
+            MainMenuHandler.GetComponent<MainMenuHandler>().resume();
+        }
+        else{
+            Time.timeScale=0;
+        }
+
         if(Input.GetMouseButtonDown(1) && buildingInConstruction){        //if right click while building under construction
             Destroy(designatedPlot);
             buildingInConstruction=false;
@@ -58,11 +84,23 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    bool togglePause(bool val){
+        if(val==true){
+            return false;
+        }
+        else{
+            return true;
+        }
+    }
+
+
     public void woodHouseButton(){
         requirements = new ResourceRequirements(5,0,0);
         int woodAvailable=resourceManager.getNumWood();
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
+        buildingObject = GameObject.Find("Wood House");
+        building = buildingObject.GetComponent<Building>();
 
 
         if(buildingInConstruction==false && requirements.compareTo(woodAvailable,foodAvailable,stoneAvailable)){

@@ -25,7 +25,12 @@ public class CameraMovement : MonoBehaviour
         
         if (Input.GetAxis("Mouse ScrollWheel") > 0f)
         {
-            moveDirection += 4*moveSpeed*transform.forward;
+            if(transform.position.y<=4){
+                // moveDirection.y*=-1;
+            }
+            else{
+                moveDirection += 4*moveSpeed*transform.forward;
+            }
         }
         if (Input.GetAxis("Mouse ScrollWheel") < 0f)
         {
@@ -34,20 +39,40 @@ public class CameraMovement : MonoBehaviour
 
         if (Input.GetKey(KeyCode.A))
         {
-            moveDirection -= moveSpeed/2*transform.right;
+            if(transform.position.z<=-250){
+                // moveDirection.y*=-1;
+            }
+            else{
+                moveDirection -= moveSpeed/2*transform.right;
+            }
         }
         if (Input.GetKey(KeyCode.D))
         {
-            moveDirection += moveSpeed/2*transform.right;
+            if(transform.position.z>=250){
+                // moveDirection.y*=-1;
+            }
+            else{
+                moveDirection += moveSpeed/2*transform.right;
+            }
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            moveDirection -= moveSpeed/2*new Vector3(1f,0f,0f);
+            if(transform.position.x<=-245){
+                // moveDirection.y*=-1;
+            }
+            else{
+                moveDirection -= moveSpeed/2*new Vector3(1f,0f,0f);
+            }
         }
         if (Input.GetKey(KeyCode.S))
         {
-            moveDirection += moveSpeed/2*new Vector3(1f,0f,0f);
+            if(transform.position.x>=275){
+                // moveDirection.y*=-1;
+            }
+            else{
+                moveDirection += moveSpeed/2*new Vector3(1f,0f,0f);
+            }
         }
 
         if (moveDirection.magnitude > 0.1f)

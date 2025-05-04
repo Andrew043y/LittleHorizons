@@ -11,6 +11,7 @@ public class MainMenuHandler : MonoBehaviour
     public Dropdown resolutionDropDown;
     public GameObject MainMenu;
     public GameObject OptionsMenu;
+    public GameObject UIHandler;
     Resolution[] resolutions;
 
     void Start(){
@@ -63,6 +64,11 @@ public class MainMenuHandler : MonoBehaviour
     public void closeOptions(){
         MainMenu.SetActive(true);
         OptionsMenu.SetActive(false);
+    }
+
+    public void resume(){
+        MainMenu.SetActive(false);
+        UIHandler.GetComponent<UIHandler>().gamePaused=false;
     }
         
 }

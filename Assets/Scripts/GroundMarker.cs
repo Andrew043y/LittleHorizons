@@ -6,7 +6,7 @@ public class GroundMarker : MonoBehaviour
     public bool isMoving=false;
     public bool isAttacking=false;
     public bool isGathering=false;
-    public float currentScale;      //this is a vector 3 use that ! ! ! !! ! ! 
+    public float currentScale=5;      //this is a vector 3 use that ! ! ! !! ! ! 
     private float checkCollisionRadius=2f;
     public float scaleSpeed = 0.5f;
     public Material movingMaterial;
@@ -14,7 +14,7 @@ public class GroundMarker : MonoBehaviour
     public Material gatherMaterial;
     void Awake()
     {
-        currentScale = transform.localScale.x;
+        // currentScale = transform.localScale.x;
     }
 
     // Update is called once per frame

@@ -46,6 +46,7 @@ public class VillagerAI : BaseAI
                 gatherablePos.y=0.13f;
                 GameObject gatherCircleClone=Instantiate(gatherCircle, gatherablePos, Quaternion.identity);
                 gatherCircleClone.GetComponent<GroundMarker>().setGathering();
+                gatherCircleClone.GetComponent<GroundMarker>().currentScale=2.5f*gatherableItem.transform.localScale.x;
                 if(carriedGatherable==null){
                     targetGatherable = gatherableItem;
                     ChangeState(getGatherableState);
@@ -130,7 +131,7 @@ public class VillagerAI : BaseAI
             return;
         }
         creature.MoveToward(targetGatherable.transform.position);
-        if(Vector3.Distance(transform.position, targetGatherable.transform.position)<2f){
+        if(Vector3.Distance(transform.position, targetGatherable.transform.position)<6f){
             GameObject harvestResource = Instantiate(targetGatherable.GetComponent<Gatherable>().gatherableObject);
             creature.pickup(harvestResource);
             targetGatherable.GetComponent<Gatherable>().decrement();
