@@ -14,6 +14,7 @@ public class GroundMarker : MonoBehaviour
     public Material gatherMaterial;
     void Awake()
     {
+        transform.localScale = new Vector3(currentScale, 1, currentScale);
         // currentScale = transform.localScale.x;
     }
 

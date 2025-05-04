@@ -2,14 +2,15 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    public bool inConstruction;
-    public LayerMask ground;
-    public LayerMask gatherable;
-    public LayerMask reservedGatherable;
-    public LayerMask villager;
-    public LayerMask building;
+    public bool inConstruction, placeable;
+    private LayerMask ground;
+    private LayerMask gatherable;
+    private LayerMask reservedGatherable;
+    private LayerMask villager;
+    private LayerMask building;
     void Awake()
     {
+        placeable=true;
         inConstruction=false;
         ground=LayerMask.GetMask("Ground");
         gatherable = LayerMask.GetMask("Gatherable");
@@ -27,9 +28,11 @@ public class Building : MonoBehaviour
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, gatherable | reservedGatherable | villager | building)){
                 Debug.Log("Obstruction hit!");
+                placeable=false;
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 transform.position = hit.point;
+                placeable=true;
             }
         }
     }

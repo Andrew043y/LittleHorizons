@@ -39,7 +39,6 @@ public class TerrainGenerator : MonoBehaviour   //WIP
         Add day/night       --rotate light and/or change color
         Add more building types (stockpile, house, barracks)
         Add win condition       --maybe build a stone castle?
-        Add more UI elements -- building buttons w/ costs
         Create fog wall?
 
             <3
