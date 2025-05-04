@@ -8,10 +8,12 @@ public class Building : MonoBehaviour
     private LayerMask reservedGatherable;
     private LayerMask villager;
     private LayerMask building;
+    public UIHandler uiHandler;
     void Awake()
     {
         placeable=true;
         inConstruction=false;
+        uiHandler = GameObject.Find("UIHandler").GetComponent<UIHandler>();
         ground=LayerMask.GetMask("Ground");
         gatherable = LayerMask.GetMask("Gatherable");
         reservedGatherable = LayerMask.GetMask("ReservedGatherable");

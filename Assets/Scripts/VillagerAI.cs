@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,6 +11,7 @@ public class VillagerAI : BaseAI
     public GameObject targetGatherable; //piece of food
     public GameObject gatherCircle;
     public GameObject carriedGatherable;
+    public UIHandler uiHandler;
     NavMeshAgent agent;
     public LayerMask ground;
     public LayerMask gatherable;
@@ -21,9 +23,10 @@ public class VillagerAI : BaseAI
     protected void Awake()
     {
         base.Awake();
+        uiHandler = GameObject.Find("UIHandler").GetComponent<UIHandler>();
         agent=GetComponent<NavMeshAgent>();
         creature=GetComponent<Creature>();
-        resourceManager = foodReturnObject.GetComponent<ResourceManager>();
+        // resourceManager = foodReturnObject.GetComponent<ResourceManager>();
         ground=LayerMask.GetMask("Ground");
         gatherable=LayerMask.GetMask("Gatherable");
         ChangeState(WanderState);
@@ -86,7 +89,7 @@ public class VillagerAI : BaseAI
     public void WanderState(){
         stateImIn = "Wander State";
         if(stateTick==1000){
-            wanderPosition = transform.position + new Vector3(Random.Range(-1f,1f), 0, Random.Range(-1f,1f));   //when villager idle, move slightly
+            wanderPosition = transform.position + new Vector3(UnityEngine.Random.Range(-1f,1f), 0, UnityEngine.Random.Range(-1f,1f));   //when villager idle, move slightly
             agent.SetDestination(wanderPosition);
         }
         // creature.MoveToward(wanderPosition);
@@ -143,9 +146,24 @@ public class VillagerAI : BaseAI
      }
     void ReturnFoodState(){
         stateImIn="Return Food State";
-        if(creature.isSelected==false){     //I want to change state of villagerAI to be wandering if it is selected while returning food   **
-            creature.MoveToward(foodReturnObject.transform.position);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, Mathf.Infinity, LayerMask.GetMask("Stockpile"));
+
+        GameObject returnMin = null;
+        float minDist = Mathf.Infinity;
+        Vector3 currentPos = transform.position;
+        foreach(Collider collider in colliders){
+            float dist = Vector3.Distance(collider.transform.position, currentPos);
+            if(dist < minDist){
+                returnMin = collider.gameObject;
+                minDist = dist;
+            }
         }
+        foodReturnObject = returnMin;
+
+        resourceManager = uiHandler.resourceManager;
+        // if(creature.isSelected==false){     //I want to change state of villagerAI to be wandering if it is selected while returning food   **
+            creature.MoveToward(foodReturnObject.transform.position);
+        // }
         if(Vector3.Distance(transform.position, foodReturnObject.transform.position)<6f){
             string gatherableTag = carriedGatherable.tag;
             Debug.Log("gatherableTag: "+gatherableTag);

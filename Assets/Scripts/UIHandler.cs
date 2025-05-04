@@ -80,7 +80,12 @@ public class UIHandler : MonoBehaviour
             requirements.decrement(resourceManager);
 
             designatedPlot.GetComponent<Building>().inConstruction=false;
-            designatedPlot.layer = LayerMask.NameToLayer("Building");
+            if(designatedPlot.tag == "Stockpile"){
+                designatedPlot.layer = LayerMask.NameToLayer("Stockpile");
+            }
+            else{
+                designatedPlot.layer = LayerMask.NameToLayer("Building");
+            }
             buildingInConstruction=false;
         }
     }
@@ -153,6 +158,7 @@ public class UIHandler : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
                 designatedPlot.GetComponent<Building>().inConstruction=true;
+                designatedPlot.tag = "Stockpile";
                 buildingInConstruction=true;
             }
         }
