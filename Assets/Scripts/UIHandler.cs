@@ -2,11 +2,7 @@ using UnityEngine;
 
 public class UIHandler : MonoBehaviour
 {
-    public GameObject buildingObject;
-    public GameObject UIPlay;
-    public GameObject UILoad;
-    public GameObject UIPause;
-    public GameObject MainMenuHandler;
+    public GameObject buildingObject, UIPlay, UILoad, UIPause, MainMenuHandler, SpawnButton;
     public LayerMask ground;
     public Building building;
     public GameObject designatedPlot=null;
@@ -116,6 +112,7 @@ public class UIHandler : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
                 designatedPlot.GetComponent<Building>().inConstruction=true;
+                designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
             }
         }
@@ -137,6 +134,7 @@ public class UIHandler : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
                 designatedPlot.GetComponent<Building>().inConstruction=true;
+                designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
             }
         }
@@ -180,6 +178,7 @@ public class UIHandler : MonoBehaviour
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
                 designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
                 designatedPlot.GetComponent<Building>().inConstruction=true;
+                designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
             }
         }

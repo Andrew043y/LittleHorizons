@@ -11,40 +11,60 @@ public class SelectionBox : MonoBehaviour
     private Vector3 mousePositionEnd;
     public RectTransform selectionBox;
     public List<Creature> selectedCreatures=new List<Creature>();
-    public LayerMask ground;
-    public LayerMask villager;
+    public Building selectedBuilding;
+    public LayerMask ground, villager, building;
     public GameObject groundMarker;
-    public GameObject UIHandler;
+    public UIHandler uiHandler;
 
     void Awake()
     {
         ground=LayerMask.GetMask("Ground");
         villager=LayerMask.GetMask("Villager");
+        building = LayerMask.GetMask("Building");
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(UIHandler.GetComponent<UIHandler>().gamePaused == false && UIHandler.GetComponent<UIHandler>().gameLoading == false){
+        if(uiHandler.gamePaused == false && uiHandler.gameLoading == false){
             // Vector3 mousePosition = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, 0, Camera.main.nearClipPlane)); //world position of mouse cursor
-            if(Input.GetMouseButtonDown(0)){
+
+            if(Input.GetMouseButtonDown(0)){        //if left mouse is just pressed
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 if(Physics.Raycast(ray, out hit, Mathf.Infinity, villager)){
                     hit.collider.gameObject.GetComponent<Creature>().isSelected=true;
                     Debug.Log(hit.transform.position);
+                    uiHandler.SpawnButton.SetActive(false);
                     selectedCreatures.Add(hit.collider.gameObject.GetComponent<Creature>());
+                }
+                else if(Physics.Raycast(ray, out hit, Mathf.Infinity, building)){
+                    hit.collider.gameObject.GetComponent<Building>().isSelected=true;
+                    selectedBuilding = hit.collider.gameObject.GetComponent<Building>();
+                    if(selectedBuilding.isSpawner){
+                        uiHandler.SpawnButton.SetActive(true);
+                        Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(hit.collider.gameObject.transform.position);
+                        uiHandler.SpawnButton.transform.position = targetScreenPosition;
+                        // create a button to spawn creature at location of building in terms of screen
+                    }
                 }
                 else{
                     foreach(Creature creature in selectedCreatures){
                         creature.isSelected=false;
                         // selectedCreatures.Remove(creature);
+                        uiHandler.SpawnButton.SetActive(false);
+                        selectedCreatures = new List<Creature>();
                     }
                 }
 
 
                 mousePositionInitial = Input.mousePosition;
                 isDragging=false;
+            }
+
+            if(Input.GetMouseButtonDown(1)){        //if right mouse just pressed
+                selectedCreatures = new List<Creature>();
+                uiHandler.SpawnButton.SetActive(false);
             }
 
             if(Input.GetMouseButton(0)){

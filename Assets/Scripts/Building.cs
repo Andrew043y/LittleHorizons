@@ -2,12 +2,8 @@ using UnityEngine;
 
 public class Building : MonoBehaviour
 {
-    public bool inConstruction, placeable;
-    private LayerMask ground;
-    private LayerMask gatherable;
-    private LayerMask reservedGatherable;
-    private LayerMask villager;
-    private LayerMask building;
+    public bool inConstruction, placeable, isSelected, isSpawner;
+    private LayerMask ground, gatherable, reservedGatherable, villager, building;
     public UIHandler uiHandler;
     void Awake()
     {
