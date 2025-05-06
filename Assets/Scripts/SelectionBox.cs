@@ -8,6 +8,7 @@ public class SelectionBox : MonoBehaviour
 
     private bool isDragging=false;
     private Vector3 mousePositionInitial;
+    public RectTransform uiElement;
     private Vector3 mousePositionEnd;
     public RectTransform selectionBox;
     public List<Creature> selectedCreatures=new List<Creature>();
@@ -44,7 +45,9 @@ public class SelectionBox : MonoBehaviour
                     if(selectedBuilding.isSpawner){
                         uiHandler.SpawnButton.SetActive(true);
                         Vector2 targetScreenPosition = Camera.main.WorldToScreenPoint(hit.collider.gameObject.transform.position);
-                        uiHandler.SpawnButton.transform.position = targetScreenPosition;
+                        // uiHandler.SpawnButton.transform.position = targetScreenPosition;
+                        Vector3 viewportPoint = new Vector3(targetScreenPosition.x / Screen.width, targetScreenPosition.y / Screen.width, 0);
+                        uiElement.anchoredPosition = viewportPoint * uiElement.rect.size;
                         // create a button to spawn creature at location of building in terms of screen
                     }
                 }
@@ -52,9 +55,9 @@ public class SelectionBox : MonoBehaviour
                     foreach(Creature creature in selectedCreatures){
                         creature.isSelected=false;
                         // selectedCreatures.Remove(creature);
-                        uiHandler.SpawnButton.SetActive(false);
                         selectedCreatures = new List<Creature>();
                     }
+                    uiHandler.SpawnButton.SetActive(false);
                 }
 
 

@@ -118,6 +118,10 @@ public class UIHandler : MonoBehaviour
         }
     }
 
+    public void woodHouseSpawn(){
+        //do buttons for spawners from spawner buildings
+    }
+
     public void stoneHouseButton(){
         requirements = new ResourceRequirements(0,0,5);     // wood, food, stone
         int woodAvailable=resourceManager.getNumWood();
