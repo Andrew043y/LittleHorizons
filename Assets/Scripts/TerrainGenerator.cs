@@ -36,7 +36,7 @@ public class TerrainGenerator : MonoBehaviour   //WIP
         Add models
         Add something player has to deal with, hostile thing
         Add skybox
-        Add feature to spawn villager from house, warrior from barracks
+        Add feature to spawn warrior from barracks
         Add win condition       --maybe build a stone castle?
         Add sound effects
         Create fog wall?

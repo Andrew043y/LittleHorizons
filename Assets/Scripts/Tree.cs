@@ -5,7 +5,7 @@ public class Tree : Gatherable
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        gatherablesLeft=5;
+        gatherablesLeft=10;
     }
 
     // Update is called once per frame

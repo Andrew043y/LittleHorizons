@@ -12,7 +12,6 @@ public class Creature : MonoBehaviour
     public bool isSelected=false;
     public LayerMask ground;
     public LayerMask gatherable;
-    public GameObject groundMarker;
     public Material gatherMaterial;
     public BaseAI AI;
 

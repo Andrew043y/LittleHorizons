@@ -26,6 +26,8 @@ public class VillagerAI : BaseAI
         uiHandler = GameObject.Find("UIHandler").GetComponent<UIHandler>();
         agent=GetComponent<NavMeshAgent>();
         creature=GetComponent<Creature>();
+        gatherCircle=GameObject.Find("HarvestCircle");
+        groundMarker=GameObject.Find("GroundMarker");
         // resourceManager = foodReturnObject.GetComponent<ResourceManager>();
         ground=LayerMask.GetMask("Ground");
         gatherable=LayerMask.GetMask("Gatherable");

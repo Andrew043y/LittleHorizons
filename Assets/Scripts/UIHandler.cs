@@ -1,8 +1,10 @@
+using TMPro;
 using UnityEngine;
 
 public class UIHandler : MonoBehaviour
 {
     public GameObject buildingObject, UIPlay, UILoad, UIPause, MainMenuHandler, SpawnButton;
+    public TMP_Text spawnButtonText;
     public LayerMask ground;
     public Building building;
     public GameObject designatedPlot=null;
@@ -10,6 +12,7 @@ public class UIHandler : MonoBehaviour
     public bool buildingInConstruction;
     public bool gameLoading=true;
     public bool gamePaused=false;
+    public Building.ResourceRequirements spawnRequirements;
     public struct ResourceRequirements{
         public int woodReq, foodReq, stoneReq;
 
@@ -84,6 +87,10 @@ public class UIHandler : MonoBehaviour
             }
             buildingInConstruction=false;
         }
+
+        if(SpawnButton.activeSelf == false){
+            spawnButtonText.text = "Spawn";
+        }
     }
 
     bool togglePause(bool val){
@@ -102,6 +109,8 @@ public class UIHandler : MonoBehaviour
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
         buildingObject = GameObject.Find("Wood House");
+        buildingObject.GetComponent<Building>().setSpawnMax(3);
+        spawnRequirements = buildingObject.GetComponent<Building>().requirements = new Building.ResourceRequirements(0,5,0);
         building = buildingObject.GetComponent<Building>();
 
 
@@ -118,16 +127,13 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    public void woodHouseSpawn(){
-        //do buttons for spawners from spawner buildings
-    }
-
     public void stoneHouseButton(){
         requirements = new ResourceRequirements(0,0,5);     // wood, food, stone
         int woodAvailable=resourceManager.getNumWood();
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
         buildingObject = GameObject.Find("Stone House");
+        buildingObject.GetComponent<Building>().setSpawnMax(6);
         building = buildingObject.GetComponent<Building>();
 
 
@@ -172,6 +178,7 @@ public class UIHandler : MonoBehaviour
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
         buildingObject = GameObject.Find("Barracks");
+        buildingObject.GetComponent<Building>().setSpawnMax(10);
         building = buildingObject.GetComponent<Building>();
 
 
@@ -207,5 +214,21 @@ public class UIHandler : MonoBehaviour
                 buildingInConstruction=true;
             }
         }
+    }
+
+    public void spawnButton(){
+        int woodAvailable=resourceManager.getNumWood();
+        int foodAvailable=resourceManager.getNumFood();
+        int stoneAvailable=resourceManager.getNumStone();
+
+        if(building.spawnMax>0 && spawnRequirements.compareTo(woodAvailable,foodAvailable,stoneAvailable) && spawnButtonText.text!="Spawn"){
+            Instantiate(building.spawnCreature, building.transform.position + new Vector3(0,5f,0), Quaternion.identity);
+            building.decrementSpawnCount();
+            spawnRequirements.decrement(resourceManager);
+        }
+        else{
+            spawnButtonText.text = "Spawn "+ building.spawnCreature.name + " \n("+spawnRequirements.foodReq+"F "+spawnRequirements.woodReq+"W " + spawnRequirements.stoneReq+"S)";
+        }
+        // Debug.Log("BUILDING: "+ building.ToString() + "SPAWN CREATURE: "+ building.spawnCreature.ToString());
     }
 }
