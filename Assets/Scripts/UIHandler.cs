@@ -108,7 +108,7 @@ public class UIHandler : MonoBehaviour
         int woodAvailable=resourceManager.getNumWood();
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
-        buildingObject = GameObject.Find("Wood House");
+        buildingObject = GameObject.Find("WoodHouse");
         buildingObject.GetComponent<Building>().setSpawnMax(3);
         spawnRequirements = buildingObject.GetComponent<Building>().requirements = new Building.ResourceRequirements(0,5,0);
         building = buildingObject.GetComponent<Building>();
@@ -119,7 +119,7 @@ public class UIHandler : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
+                designatedPlot = Instantiate(buildingObject, hit.point+ new Vector3(0,2.2f,0), Quaternion.Euler(0,-180,0));
                 designatedPlot.GetComponent<Building>().inConstruction=true;
                 designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
@@ -132,7 +132,7 @@ public class UIHandler : MonoBehaviour
         int woodAvailable=resourceManager.getNumWood();
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
-        buildingObject = GameObject.Find("Stone House");
+        buildingObject = GameObject.Find("StoneHouse");
         buildingObject.GetComponent<Building>().setSpawnMax(6);
         building = buildingObject.GetComponent<Building>();
 
@@ -142,7 +142,7 @@ public class UIHandler : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
+                designatedPlot = Instantiate(buildingObject, hit.point+ new Vector3(0,2.2f,0), Quaternion.Euler(0,-180,0));
                 designatedPlot.GetComponent<Building>().inConstruction=true;
                 designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
@@ -164,7 +164,7 @@ public class UIHandler : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
+                designatedPlot = Instantiate(buildingObject, hit.point+ new Vector3(0,1.5f,0), buildingObject.transform.rotation);
                 designatedPlot.GetComponent<Building>().inConstruction=true;
                 designatedPlot.tag = "Stockpile";
                 buildingInConstruction=true;
@@ -187,7 +187,7 @@ public class UIHandler : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
+                designatedPlot = Instantiate(buildingObject, hit.point+ new Vector3(0,3.7f,0), Quaternion.Euler(0,-180,0));
                 designatedPlot.GetComponent<Building>().inConstruction=true;
                 designatedPlot.GetComponent<Building>().isSpawner=true;
                 buildingInConstruction=true;
@@ -196,7 +196,7 @@ public class UIHandler : MonoBehaviour
     }
 
     public void castleButton(){
-        requirements = new ResourceRequirements(0,0,0);     // wood, food, stone
+        requirements = new ResourceRequirements(20,0,30);     // wood, food, stone
         int woodAvailable=resourceManager.getNumWood();
         int foodAvailable=resourceManager.getNumFood();
         int stoneAvailable=resourceManager.getNumStone();
@@ -209,7 +209,7 @@ public class UIHandler : MonoBehaviour
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                designatedPlot = Instantiate(buildingObject, hit.point, Quaternion.identity);
+                designatedPlot = Instantiate(buildingObject, hit.point+ new Vector3(0,5.5f,0), Quaternion.Euler(0,-180,0)); //-180 degree rotation needed
                 designatedPlot.GetComponent<Building>().inConstruction=true;
                 buildingInConstruction=true;
             }
@@ -222,7 +222,7 @@ public class UIHandler : MonoBehaviour
         int stoneAvailable=resourceManager.getNumStone();
 
         if(building.spawnMax>0 && spawnRequirements.compareTo(woodAvailable,foodAvailable,stoneAvailable) && spawnButtonText.text!="Spawn"){
-            Instantiate(building.spawnCreature, building.transform.position + new Vector3(0,5f,0), Quaternion.identity);
+            Instantiate(building.spawnCreature, building.transform.position + new Vector3(0,5f,0), buildingObject.transform.rotation);
             building.decrementSpawnCount();
             spawnRequirements.decrement(resourceManager);
         }

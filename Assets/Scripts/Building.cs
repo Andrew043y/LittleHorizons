@@ -55,7 +55,7 @@ public class Building : MonoBehaviour
                 placeable=false;
             }
             else if(Physics.Raycast(ray, out hit, Mathf.Infinity, ground)){
-                transform.position = hit.point;
+                transform.position = new Vector3(hit.point.x,transform.position.y, hit.point.z);
                 placeable=true;
             }
         }

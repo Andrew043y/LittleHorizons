@@ -95,8 +95,8 @@ public class Creature : MonoBehaviour
             if(transform.GetChild(i).CompareTag("Villager")==true){      //check if child objects in the creature selected are not part of its body
                 Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
                 Material[] materials = renderer.materials;
-                materials[1].SetFloat("_TransparencyVal", 1f);
-                materials[1].color=Color.green;
+                materials[materials.Length-1].SetFloat("_TransparencyVal", 1f);
+                materials[materials.Length-1].color=Color.green;
                 // transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
             }
         }
@@ -107,12 +107,12 @@ public class Creature : MonoBehaviour
             if(transform.GetChild(i).CompareTag("Villager")==true){      //check if child objects in the creature selected are not part of its body
                 Renderer renderer = transform.GetChild(i).GetComponent<Renderer>();
                 Material[] materials = renderer.materials;
-                materials[1].color=Color.white;
-                materials[1].SetFloat("_TransparencyVal", 0f);
+                materials[materials.Length-1].SetFloat("_TransparencyVal", 0f);
+                materials[materials.Length-1].color=Color.white;
                 // transform.GetChild(i).GetComponent<Renderer>().material.color=Color.green;
             }
         }
-        transform.GetChild(0).GetComponent<Renderer>().material=defaultHeadMaterial;    //reset head material
-        transform.GetChild(1).GetComponent<Renderer>().material=defaultTorsoMaterial;   //reset torso material
+        // transform.GetChild(0).GetComponent<Renderer>().material=defaultHeadMaterial;    //reset head material
+        // transform.GetChild(1).GetComponent<Renderer>().material=defaultTorsoMaterial;   //reset torso material
     }
 }

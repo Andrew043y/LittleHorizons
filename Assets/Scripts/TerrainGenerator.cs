@@ -2,6 +2,14 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.AI;
 
+/*
+        TODO:
+        Add something player has to deal with, hostile thing maybe
+        Add feature to spawn warrior from barracks
+        Add win screen
+        Add sound effects
+            <3
+*/
 public class TerrainGenerator : MonoBehaviour   //WIP
 {
     // x (-268, 268)     z (-268, 268)  coords of the floor
@@ -31,18 +39,6 @@ public class TerrainGenerator : MonoBehaviour   //WIP
         berryXVal=Random.Range(-268f, 268f);
         berryZVal=Random.Range(-268f, 268f);
 
-        /*
-        TODO:
-        Add models
-        Add something player has to deal with, hostile thing
-        Add skybox
-        Add feature to spawn warrior from barracks
-        Add win condition       --maybe build a stone castle?
-        Add sound effects
-        Create fog wall?
-
-            <3
-        */
     }
 
     void Update()
