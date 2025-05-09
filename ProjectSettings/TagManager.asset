@@ -11,6 +11,7 @@ TagManager:
   - Food
   - Stone
   - Stockpile
+  - Castle
   layers:
   - Default
   - TransparentFX

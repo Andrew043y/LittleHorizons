@@ -3,15 +3,17 @@ using UnityEngine;
 
 public class UIHandler : MonoBehaviour
 {
-    public GameObject buildingObject, UIPlay, UILoad, UIPause, MainMenuHandler, SpawnButton;
+    public GameObject buildingObject, UIPlay, UILoad, UIPause, MainMenuHandler, SpawnButton, UIWin;
     public TMP_Text spawnButtonText;
     public LayerMask ground;
     public Building building;
     public GameObject designatedPlot=null;
     public ResourceManager resourceManager;
+    public AudioHandler audioHandler;
     public bool buildingInConstruction;
     public bool gameLoading=true;
     public bool gamePaused=false;
+    public bool winCondition=false;
     public Building.ResourceRequirements spawnRequirements;
     public struct ResourceRequirements{
         public int woodReq, foodReq, stoneReq;
@@ -40,6 +42,7 @@ public class UIHandler : MonoBehaviour
 
     void Awake()
     {
+        audioHandler = GameObject.Find("AudioHandler").GetComponent<AudioHandler>();
         buildingInConstruction=false;
         ground=LayerMask.GetMask("Ground");
         UIPlay.SetActive(false);
@@ -49,6 +52,13 @@ public class UIHandler : MonoBehaviour
 
     void Update()
     {
+        if(winCondition==true){
+            UIPause.SetActive(false);
+            UIPlay.SetActive(false);
+            UIWin.SetActive(true);
+            gamePaused=true;
+            
+        }
 
         if(Input.GetKeyDown(KeyCode.Escape) && gameLoading==false){
             gamePaused=togglePause(gamePaused);
@@ -81,6 +91,10 @@ public class UIHandler : MonoBehaviour
             designatedPlot.GetComponent<Building>().inConstruction=false;
             if(designatedPlot.tag == "Stockpile"){
                 designatedPlot.layer = LayerMask.NameToLayer("Stockpile");
+            }
+            else if(designatedPlot.tag == "Castle"){
+                winCondition=true;
+                audioHandler.PlayWinNoise(); 
             }
             else{
                 designatedPlot.layer = LayerMask.NameToLayer("Building");
@@ -134,6 +148,7 @@ public class UIHandler : MonoBehaviour
         int stoneAvailable=resourceManager.getNumStone();
         buildingObject = GameObject.Find("StoneHouse");
         buildingObject.GetComponent<Building>().setSpawnMax(6);
+        spawnRequirements = buildingObject.GetComponent<Building>().requirements = new Building.ResourceRequirements(0,5,0);
         building = buildingObject.GetComponent<Building>();
 
 
@@ -179,6 +194,7 @@ public class UIHandler : MonoBehaviour
         int stoneAvailable=resourceManager.getNumStone();
         buildingObject = GameObject.Find("Barracks");
         buildingObject.GetComponent<Building>().setSpawnMax(10);
+        spawnRequirements = buildingObject.GetComponent<Building>().requirements = new Building.ResourceRequirements(0,5,0);
         building = buildingObject.GetComponent<Building>();
 
 
@@ -222,7 +238,7 @@ public class UIHandler : MonoBehaviour
         int stoneAvailable=resourceManager.getNumStone();
 
         if(building.spawnMax>0 && spawnRequirements.compareTo(woodAvailable,foodAvailable,stoneAvailable) && spawnButtonText.text!="Spawn"){
-            Instantiate(building.spawnCreature, building.transform.position + new Vector3(0,5f,0), buildingObject.transform.rotation);
+            Instantiate(building.spawnCreature, building.transform.position + new Vector3(5f,0,0), buildingObject.transform.rotation);
             building.decrementSpawnCount();
             spawnRequirements.decrement(resourceManager);
         }
@@ -230,5 +246,9 @@ public class UIHandler : MonoBehaviour
             spawnButtonText.text = "Spawn "+ building.spawnCreature.name + " \n("+spawnRequirements.foodReq+"F "+spawnRequirements.woodReq+"W " + spawnRequirements.stoneReq+"S)";
         }
         // Debug.Log("BUILDING: "+ building.ToString() + "SPAWN CREATURE: "+ building.spawnCreature.ToString());
+    }
+
+    public void quitApplication(){
+        Application.Quit();
     }
 }

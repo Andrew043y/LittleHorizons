@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class Building : MonoBehaviour
 {
     public bool inConstruction, placeable, isSelected, isSpawner;
     private LayerMask ground, gatherable, reservedGatherable, villager, building;
+    public AudioHandler audioHandler;
     public GameObject spawnCreature;
     public int spawnMax=0;
     public UIHandler uiHandler;
@@ -33,6 +35,7 @@ public class Building : MonoBehaviour
     public ResourceRequirements requirements;
     void Awake()
     {
+        audioHandler = GameObject.Find("AudioHandler").GetComponent<AudioHandler>();
         placeable=true;
         inConstruction=false;
         uiHandler = GameObject.Find("UIHandler").GetComponent<UIHandler>();
@@ -67,6 +70,7 @@ public class Building : MonoBehaviour
 
     public void decrementSpawnCount(){
         spawnMax--;
+        audioHandler.PlaySpawnNoise();
     }
 
     public void setSpawnCreature(GameObject creature){

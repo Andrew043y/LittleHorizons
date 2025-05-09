@@ -44,17 +44,13 @@ public class SelectionBox : MonoBehaviour
                     hit.collider.gameObject.GetComponent<Building>().isSelected=true;
                     selectedBuilding = hit.collider.gameObject.GetComponent<Building>();
                     uiHandler.building = selectedBuilding;
-                    if(selectedBuilding.isSpawner){
+                    if(selectedBuilding.isSpawner && selectedBuilding.spawnMax>0){
                         uiHandler.SpawnButton.SetActive(true);
                         Vector3 targetScreenPosition = Camera.main.WorldToScreenPoint(hit.collider.gameObject.transform.position);
                         Vector2 localPoint;
                         if(RectTransformUtility.ScreenPointToLocalPointInRectangle(canvas.GetComponent<RectTransform>(), targetScreenPosition, Camera.main, out localPoint)){
                             uiElement.anchoredPosition = localPoint;
                         }
-                        // uiHandler.SpawnButton.transform.position = targetScreenPosition;
-                        // Vector3 viewportPoint = new Vector3(targetScreenPosition.x / Screen.width, targetScreenPosition.y / Screen.width, 0);
-                        // uiElement.anchoredPosition = new Vector2(targetScreenPosition.x, targetScreenPosition.y);
-                        // create a button to spawn creature at location of building in terms of screen
                     }
                 }
                 else{

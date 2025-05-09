@@ -3,14 +3,9 @@ using UnityEngine;
 using UnityEngine.AI;
 
 /*
-        TODO:
-        Add something player has to deal with, hostile thing maybe
-        Add feature to spawn warrior from barracks
-        Add win screen
-        Add sound effects
             <3
 */
-public class TerrainGenerator : MonoBehaviour   //WIP
+public class TerrainGenerator : MonoBehaviour 
 {
     // x (-268, 268)     z (-268, 268)  coords of the floor
     public GameObject tree;
